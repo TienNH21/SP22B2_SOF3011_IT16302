@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -23,8 +24,10 @@ public class HelloServlet extends HttpServlet {
 		HttpServletRequest request,
 		HttpServletResponse response
 	) throws ServletException, IOException {
+		Date now = new Date();
 		String name = request.getParameter("ho_ten");
 		request.setAttribute("name", name);
+		request.setAttribute("now", now);
 		request.setAttribute("view", "/views/welcome.jsp");
 		request.getRequestDispatcher("/views/layout.jsp")
 			.forward(request, response);		
