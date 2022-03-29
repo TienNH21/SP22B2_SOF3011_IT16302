@@ -14,7 +14,7 @@
 			<th>Địa chỉ</th>
 			<th>SĐT</th>
 			<th>Email</th>
-			<th>Loại KH</th>
+			<th colspan="2">Thao tác</th>
 		</thead>
 		<tbody>
 			<c:forEach items="${ ds }" var="user">
@@ -30,7 +30,20 @@
 					<td>${ user.diaChi }</td>
 					<td>${ user.sdt }</td>
 					<td>${ user.email }</td>
-					<td>${ user.loaiKH }</td>
+					<td>
+						<a class="btn btn-primary"
+href="/SP22B2_SOF3011_IT16302/users/edit?id=${ user.id }"
+						>
+							Cập nhật
+						</a>
+					</td>
+					<td>
+						<a class="btn btn-danger"
+href="/SP22B2_SOF3011_IT16302/users/delete?id=${ user.id }"
+						>
+							Xóa
+						</a>
+					</td>
 				</tr>
 			</c:forEach>
 		</tbody>

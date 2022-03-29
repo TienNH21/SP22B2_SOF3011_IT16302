@@ -1,6 +1,7 @@
 package controllers.admin;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,17 +77,7 @@ public class UserServlet extends HttpServlet {
 		HttpServletRequest request,
 		HttpServletResponse response
 	) throws ServletException, IOException {
-		List<RegisterData> ds = new ArrayList<RegisterData>();
-		RegisterData o1 = new RegisterData("Ng Van A", "HN",
-			"anv@gmail.com", "123123", "0123", 1, 0),
-			o2 = new RegisterData("Ng Van B", "HN",
-				"anv@gmail.com", "123123", "0123", 1, 0),
-			o3 = new RegisterData("Ng Thi C", "HN",
-					"anv@gmail.com", "123123", "0123", 0, 0);
-		
-		ds.add(o1);
-		ds.add(o2);
-		ds.add(o3);
+		List<User> ds = this.userDAO.all();
 		request.setAttribute("ds", ds);
 		request.setAttribute("view",
 			"/views/admin/users/index.jsp");
@@ -127,15 +118,33 @@ public class UserServlet extends HttpServlet {
 	private void edit(
 		HttpServletRequest request,
 		HttpServletResponse response
-	) {
-		//
+	) throws ServletException, IOException {
+		String idStr = request.getParameter("id");
+		int id = Integer.parseInt(idStr);
+		User entity = this.userDAO.findById(id);
+		request.setAttribute("user", entity);
+		
+		request.setAttribute("view",
+			"/views/admin/users/edit.jsp");
+		request.getRequestDispatcher("/views/layout.jsp")
+			.forward(request, response);
 	}
 	
 	private void delete(
 		HttpServletRequest request,
 		HttpServletResponse response
-	) {
-		//
+	) throws IOException {
+		String idStr = request.getParameter("id");
+		int id = Integer.parseInt(idStr);
+		User entity = this.userDAO.findById(id);
+		try {
+			this.userDAO.delete(entity);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		response.sendRedirect("/SP22B2_SOF3011_IT16302"
+			+ "/users/index");
 	}
 	
 	private void show(
@@ -149,6 +158,18 @@ public class UserServlet extends HttpServlet {
 		HttpServletRequest request,
 		HttpServletResponse response
 	) {
-		//
+		String idStr = request.getParameter("id");
+		int id = Integer.parseInt(idStr);
+		User oldValue = this.userDAO.findById(id);
+		
+		User entity = new User();
+		try {
+			BeanUtils.populate(entity, request.getParameterMap());
+			entity.setPassword( oldValue.getPassword() );
+			
+			this.userDAO.update(entity);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
