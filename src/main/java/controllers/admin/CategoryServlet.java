@@ -43,9 +43,7 @@ public class CategoryServlet extends HttpServlet {
 		String ten = request.getParameter("ten");
 		String userIdStr = request.getParameter("user_id");
 		int id = Integer.parseInt(userIdStr);
-		
 		User user = this.userDAO.findById(id);
-		
 		cate.setTen(ten);
 		cate.setUser(user);
 		
