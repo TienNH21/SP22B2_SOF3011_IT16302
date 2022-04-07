@@ -37,6 +37,12 @@ public class LoginServlet extends HttpServlet {
 		String email = request.getParameter("email"),
 			pwd = request.getParameter("password");
 
+		if (email.length() == 0 ||
+			pwd.length() == 0) {
+			session.setAttribute("error", "Không được để trống");
+			response.sendRedirect("/SP22B2_SOF3011_IT16302"
+					+ "/login");
+		}
 		User user = this.userDAO.findByEmail(email);
 		boolean check = EncryptUtil.check(pwd,
 			user.getPassword());
